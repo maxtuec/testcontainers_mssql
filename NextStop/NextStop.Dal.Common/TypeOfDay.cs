@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace NextStop.Dal.Common;
 
-public class Route(int? id, DateTime? validFrom, DateTime? validUntil)
+public class TypeOfDay(int? id, string? name)
 {
     public int? Id { get; set; } = id;
-    public DateTime? ValidFrom { get; set; } = validFrom;
-    public DateTime? ValidUntil { get; set; } = validUntil;
+    public string? Name { get; set; } = name;
 }

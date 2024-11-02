@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace NextStop.Dal.Common;
 
-public class Route(int? id, DateTime? validFrom, DateTime? validUntil)
+public class Trip(int? id, int? delay, int? plannedRouteId)
 {
     public int? Id { get; set; } = id;
-    public DateTime? ValidFrom { get; set; } = validFrom;
-    public DateTime? ValidUntil { get; set; } = validUntil;
+    public int? Delay { get; set; } = delay;
+    public int? PlannedRouteId { get; set; } = plannedRouteId;
 }
