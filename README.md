@@ -18,3 +18,9 @@ dieses Problem im Betrieb mo glichst rasch erkennen ko nnen und b) Auskunft gebe
 10. Denken Sie an die Skalierbarkeit Ihres Projekts: Die Wiener Linien mo chten Ihr Produkt
 mit u ber 1.000 Fahrzeugen nutzen. Was macht Ihnen am meisten Kopfzerbrechen?
 11. Wenn Sie das Projekt neu anfangen wu rden – was wu rden Sie anders machen?
+
+
+TODO:
+
+ ? wegen geography als coordinates oder decimal
+ ? wegen DRIVE/TRIP/JOURNEY/TOUR/RIDE
