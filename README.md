@@ -24,3 +24,4 @@ TODO:
 
  ? wegen geography als coordinates oder decimal
  ? wegen DRIVE/TRIP/JOURNEY/TOUR/RIDE
+
