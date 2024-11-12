@@ -32,9 +32,6 @@ jobs:
   test:
     runs-on: self-hosted
     needs: build
-    env:
-      DOTNET_INSTALL_DIR: /home/actions-runner/dotnet
-      NUGET_PACKAGES: /home/actions-runner/.nuget/packages
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
