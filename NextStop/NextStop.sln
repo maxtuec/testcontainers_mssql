@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.11.35312.102
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextStop.Dal.Common", "NextStop.Dal.Common\NextStop.Dal.Common.csproj", "{B24D603D-8F4E-4D1C-B3A8-5C42EECA2F73}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NextStop.Dal.Common", "NextStop.Dal.Common\NextStop.Dal.Common.csproj", "{B24D603D-8F4E-4D1C-B3A8-5C42EECA2F73}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextStop.Tests", "NextStop.Tests\NextStop.Tests.csproj", "{1DD17308-43FA-4752-87AA-01B00F7DEB6C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NextStop.Tests", "NextStop.Tests\NextStop.Tests.csproj", "{1DD17308-43FA-4752-87AA-01B00F7DEB6C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextStop.Dal.Ado", "NextStop.Dal.Ado\NextStop.Dal.Ado.csproj", "{5B0DADCC-BA9C-4055-82CC-BF30FA28ABB3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NextStop.ConsoleTest", "NextStop.ConsoleTest\NextStop.ConsoleTest.csproj", "{CDD442A5-7F04-4C32-BF2C-DA3F1EA6EFFA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{1DD17308-43FA-4752-87AA-01B00F7DEB6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1DD17308-43FA-4752-87AA-01B00F7DEB6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1DD17308-43FA-4752-87AA-01B00F7DEB6C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5B0DADCC-BA9C-4055-82CC-BF30FA28ABB3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5B0DADCC-BA9C-4055-82CC-BF30FA28ABB3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5B0DADCC-BA9C-4055-82CC-BF30FA28ABB3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5B0DADCC-BA9C-4055-82CC-BF30FA28ABB3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CDD442A5-7F04-4C32-BF2C-DA3F1EA6EFFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CDD442A5-7F04-4C32-BF2C-DA3F1EA6EFFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CDD442A5-7F04-4C32-BF2C-DA3F1EA6EFFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CDD442A5-7F04-4C32-BF2C-DA3F1EA6EFFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
