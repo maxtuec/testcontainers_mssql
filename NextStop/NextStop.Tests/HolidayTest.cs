@@ -11,7 +11,7 @@ namespace NextStop.Tests;
 public class HolidayTest
 {
     private readonly MsSqlContainer _mssql = new MsSqlBuilder()
-        .WithImage("mcr.microsoft.com/mssql/server:2022-CU10-ubuntu-22.04") //mcr.microsoft.com/mssql/server:2022-latest
+        .WithImage("mcr.microsoft.com/mssql/server:2022-latest") //mcr.microsoft.com/mssql/server:2022-latest
         .Build();
 
     public Task InitializeAsync()
