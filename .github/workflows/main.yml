@@ -46,7 +46,7 @@ jobs:
           dotnet-version: 8
       - name: Test projects
         run: |
-          dotnet test --no-restore --verbosity normal NextStop/NextStop.Tests
+          dotnet test --no-restore NextStop/NextStop.Tests
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
