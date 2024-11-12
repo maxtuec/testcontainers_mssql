@@ -5,23 +5,24 @@ using System.Text;
 using System.Threading.Tasks;
 using Testcontainers.MsSql;
 using Xunit;
+using Testcontainers.PostgreSql;
 
 namespace NextStop.Tests;
 
 public class HolidayTest
 {
-    private readonly MsSqlContainer _mssql = new MsSqlBuilder()
-        .WithImage("mcr.microsoft.com/mssql/server:2022-latest") //mcr.microsoft.com/mssql/server:2022-latest
+    private readonly PostgreSqlContainer _postgres = new PostgreSqlBuilder()
+        .WithImage("postgres:15-alpine")
         .Build();
 
     public Task InitializeAsync()
     {
-        return _mssql.StartAsync();
+        return _postgres.StartAsync();
     }
 
     public Task DisposeAsync()
     {
-        return _mssql.DisposeAsync().AsTask();
+        return _postgres.DisposeAsync().AsTask();
     }
 
     [Fact]
