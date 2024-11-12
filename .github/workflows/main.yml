@@ -20,7 +20,7 @@ jobs:
           dotnet-version: 8
       - name: Build projects
         run: |
-          dotnet build NextStop.Dal.Common
+          dotnet build NextStop/NextStop.Dal.Common
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -46,13 +46,13 @@ jobs:
           dotnet-version: 8
           cache: true
           cache-dependency-path: |
-            NextStop.Tests/packages.lock.json
+            NextStop/NextStop.Tests/packages.lock.json
       - name: Restore dependencies
         run: |
-          dotnet restore --locked-mode NextStop.Tests
+          dotnet restore --locked-mode NextStop/NextStop.Tests
       - name: Test projects
         run: |
-          dotnet test --no-restore --verbosity normal NextStop.Tests
+          dotnet test --no-restore --verbosity normal NextStop/NextStop.Tests
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
