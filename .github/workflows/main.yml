@@ -44,12 +44,6 @@ jobs:
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8
-          cache: true
-          cache-dependency-path: |
-            NextStop/NextStop.Tests/packages.lock.json
-      - name: Restore dependencies
-        run: |
-          dotnet restore --locked-mode NextStop/NextStop.Tests
       - name: Test projects
         run: |
           dotnet test --no-restore --verbosity normal NextStop/NextStop.Tests
