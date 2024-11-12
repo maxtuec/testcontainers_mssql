@@ -27,6 +27,6 @@ public class HolidayTest
     [Fact]
     public void GetAllHolidays()
     {
-        Assert.Equal(2, 2);
+        Assert.Equal(1, 2);
     }
 }
