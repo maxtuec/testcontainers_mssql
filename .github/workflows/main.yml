@@ -2,7 +2,7 @@ name: Pipeline
 
 run-name: Run triggered by ${{ github.actor }}
 
-on: [pull_request, workflow_dispatch]
+on: [push]
 
 jobs:
   build:
@@ -52,7 +52,7 @@ jobs:
           dotnet restore --locked-mode NextStop.Tests
       - name: Test projects
         run: |
-          dotnet test --no-restore NextStop.Tests
+          dotnet test --no-restore --verbosity normal NextStop.Tests
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
