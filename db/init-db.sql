@@ -16,7 +16,7 @@ BEGIN
 			[user_name] [varchar](20) NOT NULL,
 			[password] [varchar](50) NOT NULL,
 			[user_type] [varchar](5) NOT NULL,
-				CONSTRAINT [PK_user] PRIMARY KEY CLUSTERED ([id]))
+				CONSTRAINT [PK_user_id] PRIMARY KEY CLUSTERED ([id]))
 	');
 	PRINT 'Table user created';
 
@@ -25,9 +25,8 @@ BEGIN
 		USE [nextstop_db];
 		CREATE TABLE [dbo].[type_of_day](
 			[id] [int] IDENTITY(1,1) NOT NULL,
-			[name] [varchar](10) NOT NULL,
-			[is_special] [bit],
-				CONSTRAINT [PK_type_of_day] PRIMARY KEY CLUSTERED ([id]))
+			[name] [varchar](20) NOT NULL,
+				CONSTRAINT [PK_type_of_day_id] PRIMARY KEY CLUSTERED ([id]))
 	');
 	PRINT 'Table type_of_day created';
 
@@ -40,8 +39,8 @@ BEGIN
 			[start] [date] NOT NULL,
 			[end] [date] NOT NULL,
 			[type_id] [int] NOT NULL,
-				CONSTRAINT [PK_holiday] PRIMARY KEY CLUSTERED ([id]),
-                CONSTRAINT [FK_type] FOREIGN KEY (type_id) REFERENCES type_of_day(id))
+				CONSTRAINT [PK_holiday_id] PRIMARY KEY CLUSTERED ([id]),
+                CONSTRAINT [FK_holiday_type_of_day] FOREIGN KEY (type_id) REFERENCES type_of_day(id))
 	');
 	PRINT 'Table holiday created';
 
@@ -49,10 +48,10 @@ BEGIN
 	EXEC('
 		USE [nextstop_db];
 		CREATE TABLE [dbo].[route](
-			[id] [int] IDENTITY(1,1) NOT NULL,
+			[id] [int] NOT NULL,
 			[valid_from] [date] NOT NULL,
 			[valid_until] [date],
-				CONSTRAINT [PK_route] PRIMARY KEY CLUSTERED ([id]))
+				CONSTRAINT [PK_route_id] PRIMARY KEY CLUSTERED ([id]))
 	');
 	PRINT 'Table route created';
 
@@ -64,9 +63,9 @@ BEGIN
 			[route_id] [int] NOT NULL,
 			[start_time] [time] NOT NULL,
 			[type_id] [int] NOT NULL,
-				CONSTRAINT [PK_planned_route] PRIMARY KEY CLUSTERED ([id]),
-				CONSTRAINT [FK_route] FOREIGN KEY (route_id) REFERENCES route(id),
-				CONSTRAINT [FK_type_of_day] FOREIGN KEY (type_id) REFERENCES type_of_day(id))
+				CONSTRAINT [PK_planned_route_id] PRIMARY KEY CLUSTERED ([id]),
+				CONSTRAINT [FK_planned_route_route] FOREIGN KEY (route_id) REFERENCES route(id),
+				CONSTRAINT [FK_planned_route_type_of_day] FOREIGN KEY (type_id) REFERENCES type_of_day(id))
 	');
 	PRINT 'Table planned_route created';
 
@@ -74,12 +73,11 @@ BEGIN
 	EXEC('
 		USE [nextstop_db];
 		CREATE TABLE [dbo].[stop](
-			[id] [varchar](10) IDENTITY(1,1) NOT NULL,
+			[id] [varchar](10) NOT NULL,
 			[name] [varchar](50) NOT NULL,
 			[longitude] [decimal](12,9) NOT NULL,
 			[latitude] [decimal](12,9) NOT NULL,
-			[type_id] [int] NOT NULL,
-				CONSTRAINT [PK_stop] PRIMARY KEY ([id]))
+				CONSTRAINT [PK_stop_id] PRIMARY KEY ([id]))
 	');
 	PRINT 'Table stop created';
 
@@ -90,9 +88,9 @@ BEGIN
 			[route_id] [int] NOT NULL,
 			[stop_id] [varchar](10) NOT NULL,
 			[time_passed] [int] NOT NULL,
-				CONSTRAINT [PK_route_stop] PRIMARY KEY (route_id, stop_id),
-				CONSTRAINT [FK_route] FOREIGN KEY (route_id) REFERENCES route(id),
-				CONSTRAINT [FK_stop] FOREIGN KEY (stop_id) REFERENCES stop(id))
+				CONSTRAINT [PK_route_stop_id] PRIMARY KEY (route_id, stop_id),
+				CONSTRAINT [FK_route_stop_route] FOREIGN KEY (route_id) REFERENCES route(id),
+				CONSTRAINT [FK_route_stop_stop] FOREIGN KEY (stop_id) REFERENCES stop(id))
 	');
 	PRINT 'Table route_stop created';
 
@@ -100,11 +98,11 @@ BEGIN
 	EXEC('
 		USE [nextstop_db];
 		CREATE TABLE [dbo].[trip](
-			[id] [int] NOT NULL,
-			[planned_route_id] [varchar](10) NOT NULL,
+			[id] [int] IDENTITY(1,1) NOT NULL,
+			[planned_route_id] [int] NOT NULL,
 			[delay] [int] NOT NULL,
-				CONSTRAINT [PK_trip] PRIMARY KEY CLUSTERED ([id]),
-				CONSTRAINT [FK_planned_route] FOREIGN KEY (planned_route_id) REFERENCES planned_route(id))
+				CONSTRAINT [PK_trip_id] PRIMARY KEY CLUSTERED ([id]),
+				CONSTRAINT [FK_trip_planned_route] FOREIGN KEY (planned_route_id) REFERENCES planned_route(id))
 	');
 	PRINT 'Table trip created';
 
@@ -112,13 +110,13 @@ BEGIN
 	EXEC('
 		USE [nextstop_db];
 		CREATE TABLE [dbo].[stop_log](
-			[id] [int] NOT NULL,
+			[id] [int] IDENTITY(1,1) NOT NULL,
 			[trip_id] [int] NOT NULL,
 			[route_id] [int] NOT NULL,
 			[stop_id] [varchar](10) NOT NULL,
-				CONSTRAINT [PK_stop_log] PRIMARY KEY CLUSTERED ([id]),
-				CONSTRAINT [FK_trip] FOREIGN KEY (trip_id) REFERENCES trip(id),
-				CONSTRAINT [FK_route_stop] FOREIGN KEY (route_id, stop_id) REFERENCES route_stop(route_id, stop_id))
+				CONSTRAINT [PK_stop_log_id] PRIMARY KEY CLUSTERED ([id]),
+				CONSTRAINT [FK_stop_log_trip] FOREIGN KEY (trip_id) REFERENCES trip(id),
+				CONSTRAINT [FK_stop_log_route_stop] FOREIGN KEY (route_id, stop_id) REFERENCES route_stop(route_id, stop_id))
 	');
 	PRINT 'Table stop_log created';
 
