@@ -31,6 +31,9 @@ jobs:
 
   test:
     runs-on: self-hosted
+    env:
+      DOTNET_INSTALL_DIR: /home/actions-runner/dotnet
+      NUGET_PACKAGES: /home/actions-runner/.nuget/packages
     needs: build
     steps:
       - name: Check out repository code
