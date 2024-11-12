@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Testcontainers.MsSql;
 using Xunit;
 using Testcontainers.PostgreSql;
+using System.Data.Common;
+using Npgsql;
 
 namespace NextStop.Tests;
 
@@ -28,6 +30,13 @@ public class HolidayTest
     [Fact]
     public void GetAllHolidays()
     {
+        using DbConnection test = new NpgsqlConnection(_postgres.GetConnectionString());
+        using var comm = test.CreateCommand();
+
+        comm.CommandText = "CREATE TABLE IF NOT EXISTS customers (id BIGINT NOT NULL, name VARCHAR NOT NULL, PRIMARY KEY (id))";        
+        comm.Connection?.Open();
+        comm.ExecuteNonQuery();
+
         Assert.Equal(2, 2);
     }
 }
