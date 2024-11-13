@@ -7,7 +7,7 @@ on:
 jobs:
   build:
     name: Build
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     strategy:
       matrix:
         dotnet-version: [ '8.0.x' ]
@@ -33,7 +33,7 @@ jobs:
             **/obj/
   test:
     name: Test
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     strategy:
       matrix:
         dotnet-version: [ '8.0.x' ]
