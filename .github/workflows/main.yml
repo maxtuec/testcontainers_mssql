@@ -22,7 +22,7 @@ jobs:
           dotnet-version: ${{ matrix.dotnet-version }}
       - name: Install dependencies
         run: dotnet restore
-      - name: Test
+      - name: Build
         run: dotnet build NextStop.Dal.Common
 
   test:
