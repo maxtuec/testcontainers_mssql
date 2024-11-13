@@ -36,6 +36,6 @@ public class HolidayTest : IAsyncLifetime
         comm.Connection?.Open();
         comm.ExecuteNonQuery();
 */
-        Assert.Equal(2, 2);
+        Assert.Equal(1, 2);
     }
 }
