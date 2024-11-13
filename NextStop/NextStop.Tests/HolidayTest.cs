@@ -30,7 +30,7 @@ public class HolidayTest : IAsyncLifetime
         var connectionString = _postgres.GetConnectionString();
 
         // Establish a connection to the database
-        NpgsqlConnection _connection = new NpgsqlConnection(connectionString);
+        await using NpgsqlConnection _connection = new NpgsqlConnection(connectionString);
         await _connection.OpenAsync();
 
         var createTableScript = @"
@@ -47,7 +47,6 @@ public class HolidayTest : IAsyncLifetime
 
     public async Task DisposeAsync()
     {
-        await _connection.CloseAsync();
         await _postgres.DisposeAsync().AsTask();
     }
 
