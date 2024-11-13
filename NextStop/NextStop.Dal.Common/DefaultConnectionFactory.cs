@@ -20,6 +20,7 @@ namespace NextStop.Dal.Common
             ProviderName = providerName;
 
             DbProviderFactories.RegisterFactory("Microsoft.Data.SqlClient", Microsoft.Data.SqlClient.SqlClientFactory.Instance);
+            DbProviderFactories.RegisterFactory("Npgsql", Npgsql.NpgsqlFactory.Instance);
 
             dbProviderFactory = DbProviderFactories.GetFactory(providerName);
         }
