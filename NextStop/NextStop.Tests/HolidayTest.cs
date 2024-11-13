@@ -9,7 +9,6 @@ using System.Data.Common;
 using Microsoft.Extensions.Configuration;
 using NextStop.Dal.Common;
 using NextStop.Dal.Ado;
-using Npgsql;
 
 namespace NextStop.Tests;
 
@@ -27,7 +26,7 @@ public class HolidayTest : IAsyncLifetime
     public async Task InitializeAsync()
     {
         await _postgres.StartAsync();
-
+        Thread.Sleep(1000);
         _defaultConnectionFactory = new DefaultConnectionFactory(_postgres.GetConnectionString(), "Npgsql");
 
         _adoHolidayDao = new AdoHolidayDao(_defaultConnectionFactory);
@@ -55,6 +54,14 @@ public class HolidayTest : IAsyncLifetime
         
         Assert.NotNull(allHolidays);
         Assert.Empty(allHolidays);
+    }
+
+    [Fact]
+    public async Task InsertHoliday()
+    {
+        Holiday holiday = new Holiday(null, "Custom Holiday", DateTime.Now, DateTime.Now.Add(TimeSpan.FromDays(2)),1);
+
+
     }
 }
 
