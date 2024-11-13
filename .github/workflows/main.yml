@@ -24,7 +24,13 @@ jobs:
         run: dotnet restore
       - name: Build
         run: dotnet build NextStop.Dal.Common
-
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: | 
+            **/bin/
+            **/obj/
   test:
     name: Test
     runs-on: ubuntu-latest
@@ -44,3 +50,10 @@ jobs:
         run: dotnet restore
       - name: Test
         run: dotnet test --no-restore --verbosity normal
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: test
+          path: |
+            **/bin/
+            **/obj/
