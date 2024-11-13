@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Testcontainers.MsSql;
 using Xunit;
 using Testcontainers.PostgreSql;
 using System.Data.Common;
-using Npgsql;
 
 namespace NextStop.Tests;
 
