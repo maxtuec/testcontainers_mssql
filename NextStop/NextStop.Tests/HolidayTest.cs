@@ -20,13 +20,14 @@ public class HolidayTest : IAsyncLifetime
             .WithUsername("testuser")
             .WithPassword("testpassword")
             .Build();
+    
     private IConnectionFactory? _defaultConnectionFactory;
     private AdoHolidayDao? _adoHolidayDao;
 
     public async Task InitializeAsync()
     {
         await _postgres.StartAsync();
-        Thread.Sleep(1000);
+        
         _defaultConnectionFactory = new DefaultConnectionFactory(_postgres.GetConnectionString(), "Npgsql");
 
         _adoHolidayDao = new AdoHolidayDao(_defaultConnectionFactory);
