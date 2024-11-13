@@ -8,6 +8,8 @@ jobs:
   build:
     name: Build
     runs-on: self-hosted
+    env:
+      DOTNET_INSTALL_DIR: /home/actions-runner/dotnet
     strategy:
       matrix:
         dotnet-version: [ '8.0.x' ]
