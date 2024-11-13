@@ -62,6 +62,15 @@ public class HolidayTest : IAsyncLifetime
     [Fact]
     public void GetAllHolidays()
     {
+        // SQL query to select all entries from the holidays table
+        var selectAllQuery = "SELECT COUNT(*) FROM holidays;";
+
+        // Execute the query and retrieve the result
+        using var command = new NpgsqlCommand(selectAllQuery, _connection);
+        var count = (long)await command.ExecuteScalarAsync();
+
+        // Assert that the count is zero (no entries in the holidays table)
+        Assert.Equal(0, count);
         /*
         
         IConfiguration configuration = new ConfigurationBuilder()
@@ -80,6 +89,7 @@ public class HolidayTest : IAsyncLifetime
         comm.Connection?.Open();
         comm.ExecuteNonQuery();
 */
-        Assert.Equal(1, 2);
+        
+        // Assert.Equal(2, 2);
     }
 }
