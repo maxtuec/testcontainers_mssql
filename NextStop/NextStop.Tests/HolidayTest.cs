@@ -65,6 +65,14 @@ public class HolidayTest : IAsyncLifetime
         NpgsqlConnection _connection = new NpgsqlConnection(connectionString);
         await _connection.OpenAsync();
 
+        var insertDataScript = @"
+            INSERT INTO holidays (name, date) 
+            VALUES ('New Year', '2024-01-01');
+        ";
+
+        using var insertCommand = new NpgsqlCommand(insertDataScript, _connection);
+        await insertCommand.ExecuteNonQueryAsync();
+
         // SQL query to select all entries from the holidays table
         var selectAllQuery = "SELECT COUNT(*) FROM holidays;";
 
@@ -73,7 +81,7 @@ public class HolidayTest : IAsyncLifetime
         var count = (long)await command.ExecuteScalarAsync();
 
         // Assert that the count is zero (no entries in the holidays table)
-        Assert.Equal(0, count);
+        Assert.Equal(2, count);
         /*
         
         IConfiguration configuration = new ConfigurationBuilder()
@@ -94,5 +102,23 @@ public class HolidayTest : IAsyncLifetime
 */
         
         // Assert.Equal(2, 2);
+    }
+
+    [Fact]
+    public async Task GetAllHolidays2()
+    {
+        var connectionString = _postgres.GetConnectionString();
+        NpgsqlConnection _connection = new NpgsqlConnection(connectionString);
+        await _connection.OpenAsync();
+
+        // SQL query to select all entries from the holidays table
+        var selectAllQuery = "SELECT COUNT(*) FROM holidays;";
+
+        // Execute the query and retrieve the result
+        using var command = new NpgsqlCommand(selectAllQuery, _connection);
+        var count = (long)await command.ExecuteScalarAsync();
+
+        // Assert that the count is zero (no entries in the holidays table)
+        Assert.Equal(1, count);
     }
 }
