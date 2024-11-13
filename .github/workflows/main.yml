@@ -38,6 +38,7 @@ jobs:
     runs-on: self-hosted
     env:
       DOTNET_INSTALL_DIR: /home/actions-runner/dotnet
+      DOCKER_HOST: unix:///var/run/docker.sock
     strategy:
       matrix:
         dotnet-version: [ '8.0.x' ]
