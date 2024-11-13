@@ -57,4 +57,16 @@ public class AdoHolidayDao : IHolidayDao
                     (DateTime)row["end"],
                     (int)row["type_id"]
             );
+
+    public async Task<bool> CreateTeableAsync(CancellationToken cancellationToken = default)
+    {
+        return 1 == await template.ExecuteAsync(@"CREATE TABLE holiday (
+                                                    id SERIAL PRIMARY KEY,
+                                                    name VARCHAR(30) NOT NULL,
+                                                    start DATE NOT NULL,
+                                                    end DATE NOT NULL,
+                                                    type_id INT NOT NULL,
+                                                    CONSTRAINT FK_holiday_type_of_day FOREIGN KEY (type_id) REFERENCES type_of_day(id)
+                                                );", cancellationToken);
+    }
 }

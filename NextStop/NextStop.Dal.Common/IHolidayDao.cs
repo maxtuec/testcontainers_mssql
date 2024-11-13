@@ -12,4 +12,5 @@ public interface IHolidayDao
     Task<bool> UpdateAsync(Holiday holiday, CancellationToken cancellationToken = default);
     Task<bool> InsertAsync(Holiday holiday, CancellationToken cancellationToken= default);
     Task<bool> DeleteAsync(Holiday holiday, CancellationToken cancellationToken= default);
+    Task<bool> CreateTeableAsync(CancellationToken cancellationToken = default);
 }

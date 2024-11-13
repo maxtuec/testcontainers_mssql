@@ -8,7 +8,7 @@ using Testcontainers.PostgreSql;
 using System.Data.Common;
 using Microsoft.Extensions.Configuration;
 using NextStop.Dal.Common;
-using Npgsql;
+using NextStop.Dal.Ado;
 
 namespace NextStop.Tests;
 
@@ -21,11 +21,17 @@ public class HolidayTest : IAsyncLifetime
         .WithPassword("testpassword")   // Set the password
         .Build();
 
+    AdoHolidayDao? adoHolidayDao;
+
     public async Task InitializeAsync()
     {
-        // Start the PostgreSQL container
         await _postgres.StartAsync();
 
+        IConnectionFactory defaultConnectionFactory = new DefaultConnectionFactory(_postgres.GetConnectionString(), "Npgsql");
+        adoHolidayDao = new AdoHolidayDao(defaultConnectionFactory);
+        await adoHolidayDao.CreateTeableAsync();
+
+        /*
         // Set up the connection string
         var connectionString = _postgres.GetConnectionString();
 
@@ -51,7 +57,18 @@ public class HolidayTest : IAsyncLifetime
 
         using var insertCommand = new NpgsqlCommand(insertDataScript, _connection);
         await insertCommand.ExecuteNonQueryAsync();
+        */
     }
+    /*
+    private async Task ExecuteSqlScriptAsync(string scriptFilePath)
+    {
+        // Read the SQL script file
+        var script = await File.ReadAllTextAsync(scriptFilePath);
+
+        // Execute the SQL commands as a single batch
+        using var command = new NpgsqlCommand(script, _connection);
+        await command.ExecuteNonQueryAsync();
+    }*/
 
     public async Task DisposeAsync()
     {
@@ -61,6 +78,10 @@ public class HolidayTest : IAsyncLifetime
     [Fact]
     public async Task GetAllHolidays()
     {
+        IEnumerable<Holiday> allHolidays = await adoHolidayDao.GetAllAsync();
+        int count = allHolidays.Count();
+        Assert.Equal(0, count);
+        /*
         var connectionString = _postgres.GetConnectionString();
         NpgsqlConnection _connection = new NpgsqlConnection(connectionString);
         await _connection.OpenAsync();
@@ -82,6 +103,7 @@ public class HolidayTest : IAsyncLifetime
 
         // Assert that the count is zero (no entries in the holidays table)
         Assert.Equal(2, count);
+        */
         /*
         
         IConfiguration configuration = new ConfigurationBuilder()
@@ -103,7 +125,7 @@ public class HolidayTest : IAsyncLifetime
         
         // Assert.Equal(2, 2);
     }
-
+    /*
     [Fact]
     public async Task GetAllHolidays2()
     {
@@ -121,4 +143,6 @@ public class HolidayTest : IAsyncLifetime
         // Assert that the count is zero (no entries in the holidays table)
         Assert.Equal(1, count);
     }
+    */
+    
 }
