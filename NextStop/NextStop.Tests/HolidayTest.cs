@@ -43,6 +43,14 @@ public class HolidayTest : IAsyncLifetime
 
         using var command = new NpgsqlCommand(createTableScript, _connection);
         await command.ExecuteNonQueryAsync();
+
+         var insertDataScript = @"
+            INSERT INTO holidays (name, date) 
+            VALUES ('New Year', '2024-01-01');
+        ";
+
+        using var insertCommand = new NpgsqlCommand(insertDataScript, _connection);
+        await insertCommand.ExecuteNonQueryAsync();
     }
 
     public async Task DisposeAsync()
