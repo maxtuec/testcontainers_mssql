@@ -15,13 +15,13 @@ public class AdoHolidayDao : IHolidayDao
 
     public async Task<IEnumerable<Holiday>> GetAllAsync(CancellationToken cancellationToken = default)
     {
-        return await template.QueryAsync("select * from dbo.holiday", MapRowToHoliday, cancellationToken);
+        return await template.QueryAsync("select * from holiday", MapRowToHoliday, cancellationToken);
     }
 
     public async Task<bool> UpdateAsync(Holiday holiday, CancellationToken cancellationToken = default)
     {
         return 1 == await template.ExecuteAsync(
-            "update dbo.holiday set name = @name, start = @start, end = @end, type_id = @type where id = @id",
+            "update holiday set name = @name, start_date = @start, end_date = @end, type_id = @type where id = @id",
             cancellationToken,
             new QueryParameter("@name", holiday.Name),
             new QueryParameter("@start", holiday.Start),
@@ -33,7 +33,7 @@ public class AdoHolidayDao : IHolidayDao
     public async Task<bool> InsertAsync(Holiday holiday, CancellationToken cancellationToken = default)
     {
         return 1 == await template.ExecuteAsync(
-            "insert into dbo.holiday (name, start, end, type_id) values (@name, @start, @end, @type)",
+            "insert into holiday (name, start_date, end_date, type_id) values (@name, @start, @end, @type)",
             cancellationToken,
             new QueryParameter("@name", holiday.Name),
             new QueryParameter("@start", holiday.Start),
@@ -44,7 +44,7 @@ public class AdoHolidayDao : IHolidayDao
     public async Task<bool> DeleteAsync(Holiday holiday, CancellationToken cancellationToken = default)
     {
         return 1 == await template.ExecuteAsync(
-            "delete from dbo.holiday where id = @id",
+            "delete from holiday where id = @id",
             cancellationToken,
             new QueryParameter("@id", holiday.Id));
     }
@@ -53,20 +53,20 @@ public class AdoHolidayDao : IHolidayDao
             new Holiday(
                     (int)row["id"],
                     (string)row["name"],
-                    (DateTime)row["start"],
-                    (DateTime)row["end"],
+                    (DateTime)row["start_date"],
+                    (DateTime)row["end_date"],
                     (int)row["type_id"]
             );
 
+    // TODO: Change date variables!!!!
     public async Task<bool> CreateTeableAsync(CancellationToken cancellationToken = default)
     {
         return 1 == await template.ExecuteAsync(@"CREATE TABLE holiday (
                                                     id SERIAL PRIMARY KEY,
                                                     name VARCHAR(30) NOT NULL,
-                                                    start DATE NOT NULL,
-                                                    end DATE NOT NULL,
-                                                    type_id INT NOT NULL,
-                                                    CONSTRAINT FK_holiday_type_of_day FOREIGN KEY (type_id) REFERENCES type_of_day(id)
-                                                );", cancellationToken);
+                                                    start_date DATE NOT NULL,
+                                                    end_date DATE NOT NULL,
+                                                    type_id INT NOT NULL
+                                                )", cancellationToken);
     }
 }

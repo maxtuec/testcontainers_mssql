@@ -9,9 +9,56 @@ using System.Data.Common;
 using Microsoft.Extensions.Configuration;
 using NextStop.Dal.Common;
 using NextStop.Dal.Ado;
+using Npgsql;
 
 namespace NextStop.Tests;
 
+public class HolidayTest : IAsyncLifetime
+{
+    private readonly PostgreSqlContainer _postgres = new PostgreSqlBuilder()
+            .WithImage("postgres:15-alpine")
+            .WithDatabase("testdb")
+            .WithUsername("testuser")
+            .WithPassword("testpassword")
+            .Build();
+    private IConnectionFactory? _defaultConnectionFactory;
+    private AdoHolidayDao? _adoHolidayDao;
+
+    public async Task InitializeAsync()
+    {
+        await _postgres.StartAsync();
+
+        _defaultConnectionFactory = new DefaultConnectionFactory(_postgres.GetConnectionString(), "Npgsql");
+
+        _adoHolidayDao = new AdoHolidayDao(_defaultConnectionFactory);
+
+        CancellationTokenSource cts = new CancellationTokenSource();
+        await _adoHolidayDao.CreateTeableAsync(cts.Token);
+    }
+
+    public async Task DisposeAsync()
+    {
+        // Dispose of PostgreSQL container
+        await _postgres.DisposeAsync();
+    }
+
+    [Fact]
+    public async Task GetAllHolidays_ShouldReturnZero_WhenNoHolidaysExist()
+    {
+        CancellationTokenSource cts = new CancellationTokenSource();
+        IEnumerable<Holiday>? allHolidays = null;
+
+        if (_adoHolidayDao is not null)
+        {
+            allHolidays = await _adoHolidayDao.GetAllAsync(cts.Token);
+        }
+        
+        Assert.NotNull(allHolidays);
+        Assert.Empty(allHolidays);
+    }
+}
+
+/*
 public class HolidayTest : IAsyncLifetime
 {
     private readonly PostgreSqlContainer _postgres = new PostgreSqlBuilder()
@@ -21,54 +68,14 @@ public class HolidayTest : IAsyncLifetime
         .WithPassword("testpassword")   // Set the password
         .Build();
 
-    AdoHolidayDao? adoHolidayDao;
-
     public async Task InitializeAsync()
     {
         await _postgres.StartAsync();
 
         IConnectionFactory defaultConnectionFactory = new DefaultConnectionFactory(_postgres.GetConnectionString(), "Npgsql");
-        adoHolidayDao = new AdoHolidayDao(defaultConnectionFactory);
-        await adoHolidayDao.CreateTeableAsync();
-
-        /*
-        // Set up the connection string
-        var connectionString = _postgres.GetConnectionString();
-
-        // Establish a connection to the database
-        await using NpgsqlConnection _connection = new NpgsqlConnection(connectionString);
-        await _connection.OpenAsync();
-
-        var createTableScript = @"
-            CREATE TABLE IF NOT EXISTS holidays (
-                id SERIAL PRIMARY KEY,
-                name VARCHAR(100) NOT NULL,
-                date DATE NOT NULL
-            );
-        ";
-
-        using var command = new NpgsqlCommand(createTableScript, _connection);
-        await command.ExecuteNonQueryAsync();
-
-         var insertDataScript = @"
-            INSERT INTO holidays (name, date) 
-            VALUES ('New Year', '2024-01-01');
-        ";
-
-        using var insertCommand = new NpgsqlCommand(insertDataScript, _connection);
-        await insertCommand.ExecuteNonQueryAsync();
-        */
+        AdoHolidayDao adoHolidayDao = new AdoHolidayDao(defaultConnectionFactory);
+        await adoHolidayDao.CreateTeableAsync(new CancellationTokenSource().Token);
     }
-    /*
-    private async Task ExecuteSqlScriptAsync(string scriptFilePath)
-    {
-        // Read the SQL script file
-        var script = await File.ReadAllTextAsync(scriptFilePath);
-
-        // Execute the SQL commands as a single batch
-        using var command = new NpgsqlCommand(script, _connection);
-        await command.ExecuteNonQueryAsync();
-    }*/
 
     public async Task DisposeAsync()
     {
@@ -78,71 +85,19 @@ public class HolidayTest : IAsyncLifetime
     [Fact]
     public async Task GetAllHolidays()
     {
-        IEnumerable<Holiday> allHolidays = await adoHolidayDao.GetAllAsync();
+        IConnectionFactory defaultConnectionFactory = new DefaultConnectionFactory(_postgres.GetConnectionString(), "Npgsql");
+        AdoHolidayDao adoHolidayDao = new AdoHolidayDao(defaultConnectionFactory);
+        IEnumerable<Holiday> allHolidays = await adoHolidayDao.GetAllAsync(new CancellationTokenSource().Token);
         int count = allHolidays.Count();
         Assert.Equal(0, count);
-        /*
-        var connectionString = _postgres.GetConnectionString();
-        NpgsqlConnection _connection = new NpgsqlConnection(connectionString);
-        await _connection.OpenAsync();
-
-        var insertDataScript = @"
-            INSERT INTO holidays (name, date) 
-            VALUES ('New Year', '2024-01-01');
-        ";
-
-        using var insertCommand = new NpgsqlCommand(insertDataScript, _connection);
-        await insertCommand.ExecuteNonQueryAsync();
-
-        // SQL query to select all entries from the holidays table
-        var selectAllQuery = "SELECT COUNT(*) FROM holidays;";
-
-        // Execute the query and retrieve the result
-        using var command = new NpgsqlCommand(selectAllQuery, _connection);
-        var count = (long)await command.ExecuteScalarAsync();
-
-        // Assert that the count is zero (no entries in the holidays table)
-        Assert.Equal(2, count);
-        */
-        /*
-        
-        IConfiguration configuration = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.json", optional: false)
-            .Build();
-
-        var connectionFactory = DefaultConnectionFactory.FromConfiguration(configuration, "NextStopDbConnection");
-
-        CancellationTokenSource tokenSource = new CancellationTokenSource();
-        */
-        /*
-        using DbConnection test = new NpgsqlConnection(_postgres.GetConnectionString());
-        using var comm = test.CreateCommand();
-
-        comm.CommandText = "CREATE TABLE IF NOT EXISTS customers (id BIGINT NOT NULL, name VARCHAR NOT NULL, PRIMARY KEY (id))";        
-        comm.Connection?.Open();
-        comm.ExecuteNonQuery();
-*/
-        
-        // Assert.Equal(2, 2);
     }
-    /*
-    [Fact]
-    public async Task GetAllHolidays2()
-    {
-        var connectionString = _postgres.GetConnectionString();
-        NpgsqlConnection _connection = new NpgsqlConnection(connectionString);
-        await _connection.OpenAsync();
-
-        // SQL query to select all entries from the holidays table
-        var selectAllQuery = "SELECT COUNT(*) FROM holidays;";
-
-        // Execute the query and retrieve the result
-        using var command = new NpgsqlCommand(selectAllQuery, _connection);
-        var count = (long)await command.ExecuteScalarAsync();
-
-        // Assert that the count is zero (no entries in the holidays table)
-        Assert.Equal(1, count);
-    }
-    */
-    
+ 
 }
+*/
+/*
+[Fact]
+public async Task InsertHoliday()
+{
+
+}
+*/
