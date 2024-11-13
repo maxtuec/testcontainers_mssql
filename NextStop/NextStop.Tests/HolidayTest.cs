@@ -21,8 +21,6 @@ public class HolidayTest : IAsyncLifetime
         .WithPassword("testpassword")   // Set the password
         .Build();
 
-    private NpgsqlConnection _connection;
-
     public async Task InitializeAsync()
     {
         // Start the PostgreSQL container
@@ -32,15 +30,9 @@ public class HolidayTest : IAsyncLifetime
         var connectionString = _postgres.GetConnectionString();
 
         // Establish a connection to the database
-        _connection = new NpgsqlConnection(connectionString);
+        NpgsqlConnection _connection = new NpgsqlConnection(connectionString);
         await _connection.OpenAsync();
 
-        // Run the SQL script to create the necessary table
-        await CreateTableAsync();
-    }
-
-    private async Task CreateTableAsync()
-    {
         var createTableScript = @"
             CREATE TABLE IF NOT EXISTS holidays (
                 id SERIAL PRIMARY KEY,
@@ -60,8 +52,12 @@ public class HolidayTest : IAsyncLifetime
     }
 
     [Fact]
-    public void GetAllHolidays()
+    public async Task GetAllHolidays()
     {
+        var connectionString = _postgres.GetConnectionString();
+        NpgsqlConnection _connection = new NpgsqlConnection(connectionString);
+        await _connection.OpenAsync();
+
         // SQL query to select all entries from the holidays table
         var selectAllQuery = "SELECT COUNT(*) FROM holidays;";
 
